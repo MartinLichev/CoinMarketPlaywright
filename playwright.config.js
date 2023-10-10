@@ -28,11 +28,10 @@ module.exports = defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },
-  globalSetup: require.resolve('./global-setup.js'),
   /* Configure projects for major browsers */
   projects: [
-    { name: 'chromium' },
-    { name: 'firefox' },
-    { name: 'webkit' },
+    { name: 'chromium', use: { headless: false }},
+    // { name: 'firefox' },
+    // { name: 'webkit' },
   ],
 });

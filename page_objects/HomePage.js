@@ -1,30 +1,27 @@
+const PlaywrightWrapper = require('../PlaywrightWrapper');
 
-const PlaywrightHelper = require('../utils/PlaywrightHelper.js');
-
-class HomePage extends PlaywrightHelper {
-    constructor(page) {
-        super();
-        this.page = page;
+class HomePage extends PlaywrightWrapper {
+    constructor(page, expect) {
+        super(page, expect);
     }
 
-    searchInputLocator = '//div[text() = "Search"]';
-    currencyValidationLocator = '//span[@data-role="coin-name" and @title="Bitcoin"]/span[@class="coin-name-pc"]';
+    searchInputLocator = 'xpath=//div[text() = "Search"]';
+    currencySelectedLocator = '(//img/following::p[@data-sensors-click="true"])[1]';
+    currencyLocator = '//span[@class="coin-name-pc"]';
 
-    async navigateToHomePage(url) {
-        await this.navigate(url);
+    async performSearch(item) {
+        await this.fillInput(this.searchInputLocator, item);
+        await this.assertElementToHaveText(this.currencySelectedLocator, item);
+        await this.click(this.currencySelectedLocator);
     }
 
-    async performSearch(searchTerm) {
-        await this.waitForElement(this.searchInputLocator);
-        await this.click(this.searchInputLocator);
-        await this.type(this.searchInputLocator, searchTerm);
-        await this.pressKey('Enter');
+    async verifyCurrencyIsDisplayed(item) {
+        await this.waitForElementVisible(this.currencyLocator);
+        await this.assertElementToHaveText(this.currencyLocator, item);
     }
 
-    async assertCurrencyIsDisplayed() {
-        await this.assertToBeVisible(this.currencyValidationLocator);
-        await this.assertToHaveText(this.currencyValidationLocator, 'Bitcoin');
+    async acceptSiteCookies() {
+        await this.acceptCookies(cookieButtonSelector);
     }
 }
-
 module.exports = HomePage;
