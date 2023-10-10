@@ -66,6 +66,11 @@ class PlaywrightWrapper {
             console.log('Cookie acceptance button not found or not clickable.');
         }
     }
+
+    async getElementText(selector) {
+        await this.page.waitForSelector(selector, {state: 'visible'});
+        return await this.page.textContent(selector);
+    }
 }
 
 module.exports = PlaywrightWrapper;
