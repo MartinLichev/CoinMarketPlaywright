@@ -71,6 +71,11 @@ class PlaywrightWrapper {
         });
     }
 
+    async verifyUrl(expectedUrl) {
+        const currentUrl = await this.page.url();
+        this.expect(currentUrl).toBe(expectedUrl);
+    }
+
     async acceptCookies(cookieButtonSelector) {
         try {
             await this.page.waitForSelector(cookieButtonSelector, {timeout: 5000});
