@@ -58,6 +58,19 @@ class PlaywrightWrapper {
         await this.expect(this.page.locator(selector)).toBeChecked();
     }
 
+    async assertElementWithDelay(actual, expected, delay = 5000) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                try {
+                    this.expect(actual).toBe(expected);
+                    resolve();
+                } catch (error) {
+                    reject(error);
+                }
+            }, delay);
+        });
+    }
+
     async acceptCookies(cookieButtonSelector) {
         try {
             await this.page.waitForSelector(cookieButtonSelector, {timeout: 5000});
